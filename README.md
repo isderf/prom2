@@ -1,2 +1,2 @@
 # prom2
-cuase FIRE wasn't cool enough
+cause FIRE wasn't cool enough
