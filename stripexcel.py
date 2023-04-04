@@ -23,6 +23,8 @@ for row in df.itertuples():
     # If Symbol doesn't exist in db, create new stockInfo
     if not dao.searchForSymbol(row[1]):
         dao.createNewStockInfo(row[1], row[2], row[3], row[5])
-        #   AND add to championsList
-        # dao.addToChampionsList(
-# Else update championsList with new lastSeenOn, currentlyOnList, yearsOn
+        # AND add to championsList
+        dao.addToChampionsList(row[1], row[4])
+    else:
+        # Else update championsList with new lastSeenOn, currentlyOnList, yearsOn
+        dao.updateChampionsList(row[4])
