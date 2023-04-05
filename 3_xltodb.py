@@ -1,13 +1,6 @@
 import openpyxl
 import pandas as pd
-import mysql.connector
 import dao
-
-# define the MySQL connection details
-host = 'localhost'
-database = 'dividendchampions'
-user = 'access'
-password = 'yellowrandomkittenporter'
 
 # define the columns we want
 sheet_name = 'Champions'
