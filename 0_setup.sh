@@ -16,3 +16,7 @@ sudo apt install python3-pip -y
 pip install mysql-connector-python
 #install openpyxl for access to xlsx for pandas
 pip install openpyxl
+
+# install google api magics 
+sudo apt install python3-lxml -y
+pip install yfinance
