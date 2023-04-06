@@ -5,6 +5,9 @@ import yfinance as yf
 # for loop through each row in stockInfo
 loopVariable = dao.getStockInfoData()
 
+#truncate table
+dao.truncateValuations()
+
 # query google for sharePrice and pe
 for row in loopVariable:
     stockSymbol = row[1]

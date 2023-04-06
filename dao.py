@@ -145,7 +145,6 @@ def updateChampionsList(yearsOnList):
     cnx.close()
 
 def putStockValuations(stockInfoID, sharePrice, pe):
-#nuke current valuations?
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
 
@@ -155,6 +154,20 @@ def putStockValuations(stockInfoID, sharePrice, pe):
 
     #execute the query
     cursor.execute(query, data)
+    cnx.commit()
+
+    # close the cursor and MySQL connection
+    cursor.close()
+    cnx.close()
+
+def truncateValuations():
+    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    cursor = cnx.cursor()
+
+    truncate_query = "TRUNCATE currentValuations"
+    cursor.execute(truncate_query)
+
+    # Commit the changes to the database
     cnx.commit()
 
     # close the cursor and MySQL connection
