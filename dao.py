@@ -7,6 +7,17 @@ database = 'dividendchampions'
 user = 'access'
 password = 'yellowrandomkittenporter'
 
+def checkStockSymbol(stockSymbol):
+    if stockSymbol == "ARTN.A":
+        newSymbol = "ARTNA"
+    elif stockSymbol == "BF.B":
+        newSymbol = "BF-B"
+    elif stockSymbol == "MKC.V":
+        newSymbol = "MKC-V"
+    else:
+        newSymbol = stockSymbol
+    return newSymbol
+
 def setChampionsListToFalse():
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
@@ -42,6 +53,7 @@ def getStockInfoData():
 def searchForSymbol(symbolToFind):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
+    symbolToFind = checkStockSymbol(symbolToFind)
     query = "SELECT * FROM stockInfo WHERE symbol = %s"
 
     #execute the query
@@ -61,6 +73,7 @@ def createNewStockInfo(stockSymbol, stockCompany, stockSector, stockIndustry):
     #'Symbol', 'Company', 'Sector', 'Industry'
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
+    stockSymbol = checkStockSymbol(stockSymbol)
     query = "INSERT INTO stockInfo (name, symbol, sector, industry) VALUES (%s, %s, %s, %s)"
     data = (stockCompany, stockSymbol, stockSector, stockIndustry)
 
@@ -77,6 +90,7 @@ def getStockInfoID(stockSymbol):
     #stockInfoID, lastSeenOnList, currentlyOnList, yearsOn
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
+    stockSymbol = checkStockSymbol(stockSymbol)
     query = "SELECT id FROM stockInfo WHERE symbol = %s"
 
     cursor.execute(query, (stockSymbol,))
@@ -121,6 +135,23 @@ def updateChampionsList(yearsOnList):
     query = "UPDATE championsList SET lastSeenOnList = %s, currentlyOnList = %s, yearsOn = %s WHERE stockInfoID = %s"
     today = date.today()
     data = (today, True, yearsOnList, tempResult)
+
+    #execute the query
+    cursor.execute(query, data)
+    cnx.commit()
+
+    # close the cursor and MySQL connection
+    cursor.close()
+    cnx.close()
+
+def putStockValuations(stockInfoID, sharePrice, pe):
+#nuke current valuations?
+    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    cursor = cnx.cursor()
+
+    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice, pe) VALUES (%s, %s, %s, %s)"
+    today = date.today()
+    data = (stockInfoID, today, sharePrice, pe)
 
     #execute the query
     cursor.execute(query, data)

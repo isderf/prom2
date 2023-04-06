@@ -7,19 +7,23 @@ loopVariable = dao.getStockInfoData()
 
 # query google for sharePrice and pe
 for row in loopVariable:
+    stockSymbol = row[1]
     # get sharePrice from google
     # Create a ticker object for Google
-    goog = yf.Ticker(row[1])
-    ##### do something with row[1]
+    goog = yf.Ticker(stockSymbol)
     # Get the current stock price
     current_price = goog.info['regularMarketPrice']
     # get pe from google
-    pe_ratio = goog.info['trailingPE']
+    if "trailingPE" in goog.info:
+        pe_ratio = goog.info['trailingPE']
+    else:
+        pe_ratio = None 
+        print("PE error for: ", stockSymbol)
 
-    print("Ticker: ", row[1])
+    print("Ticker: ", stockSymbol)
     print("Current Stock Price: $", current_price)
     print("PE Ratio: ", pe_ratio)
 
-    time.sleep(2)
+    time.sleep(1)
     # store in currentValuations
-    #dao.putStockValuations(sharePrice, pe)
+    dao.putStockValuations(row[0], current_price, pe_ratio)

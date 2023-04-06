@@ -2,6 +2,11 @@
 #Go and get the Dividend Champions xlsx
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1D4H2OoHOFVPmCoyKBVCjxIl0Bt3RLYSz' -O USDividendChampions.xlsx
 
+#check for dir, create if not there
+if [ ! -d "spreadsheet" ]; then
+  mkdir -p "spreadsheet"
+fi
+
 #del the old old spreadsheet
 rm spreadsheet/USDividendChampions.old
 
