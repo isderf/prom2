@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Current Valuations by Sector</title>
+</head>
+<body>
+  <h1>Current Valuations by Sector</h1>
+  {% for sector, stocks in results.items() %}
+    <h2>{{ sector }}</h2>
+    <table>
+      <thead>
+        <tr>
+		<th>Name</th>
+		<th>Symbol</th>
+          <th>Share Price</th>
+          <th>P/E Ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for stock in stocks %}
+          <tr>
+		  <td>{{ stock.name }}</td>
+		  <td>{{ stock.symbol }}</td>
+            <td>{{ stock.share_price }}</td>
+            <td>{{ stock.pe }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+</body>
+</html>
+
