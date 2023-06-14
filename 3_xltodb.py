@@ -20,4 +20,4 @@ for row in df.itertuples():
         dao.addToChampionsList(row[1], row[4])
     else:
         # Else update championsList with new lastSeenOn, currentlyOnList, yearsOn
-        dao.updateChampionsList(row[4])
+        dao.updateChampionsList(row[1], row[4])

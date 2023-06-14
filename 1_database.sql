@@ -34,7 +34,7 @@ CREATE TABLE currentValuations(
 	stockInfoID INT,
 	valuationDate DATE,
 	sharePrice FLOAT,
-	pe FLOAT
+	pe FLOAT,
 	FOREIGN KEY ( stockInfoID ) REFERENCES stockInfo( id )
 );
 

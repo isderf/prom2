@@ -14,8 +14,12 @@ for row in loopVariable:
     # get sharePrice from google
     # Create a ticker object for Google
     goog = yf.Ticker(stockSymbol)
+    #infoTemp = goog.get_info()
+    #print(infoTemp)
+    #print('*'*20)
     # Get the current stock price
-    current_price = goog.info['regularMarketPrice']
+    current_price = goog.info['currentPrice']
+    #current_price = infoTemp['regularMarketPrice']
     # get pe from google
     if "trailingPE" in goog.info:
         pe_ratio = goog.info['trailingPE']

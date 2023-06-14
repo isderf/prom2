@@ -14,6 +14,8 @@ def checkStockSymbol(stockSymbol):
         newSymbol = "BF-B"
     elif stockSymbol == "MKC.V":
         newSymbol = "MKC-V"
+    elif stockSymbol == "RBCA.A":
+        newSymbol = "RBCAA"
     else:
         newSymbol = stockSymbol
     return newSymbol
@@ -124,7 +126,7 @@ def addToChampionsList(stockSymbol, yearsOnList):
     cursor.close()
     cnx.close()
 
-def updateChampionsList(yearsOnList):
+def updateChampionsList(stockSymbol, yearsOnList):
     #stockInfoID, lastSeenOnList, currentlyOnList, yearsOn
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
