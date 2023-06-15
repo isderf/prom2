@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Holding</title>
+</head>
+<body>
+  <a href="/valuations">Current Valuations</a>
+  <a href="/addHolding">Add Holding</a>
+  <a href="/viewHoldings">View Holdings</a>
+  <a href="/">Evaluate</a>
+    <h1>Enter Your Stock Holding</h1>
+    <form action="/viewHoldings" method="post">
+        <label for="stock_name">Stock Name:</label>
+        <select id="stock_name" name="stock_name" required>
+            {% for stock in stock_info %}
+	    <option value="{{ stock[0] }}">{{ stock[2] }} {{ stock[1] }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="date_bought">Date Bought:</label>
+        <input type="date" id="date_bought" name="date_bought" required><br><br>
+        <label for="price_paid">Price Paid:</label>
+        <input type="number" step="0.01" id="price_paid" name="price_paid" required><br><br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+

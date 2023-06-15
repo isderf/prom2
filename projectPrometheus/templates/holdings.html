@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Stock Holdings</title>
+</head>
+<body>
+  <a href="/valuations">Current Valuations</a>
+  <a href="/addHolding">Add Holding</a>
+  <a href="/viewHoldings">View Holdings</a>
+  <a href="/">Evaluate</a>
+    <h1>My Stock Holdings</h1>
+    <table>
+        <tr>
+            <th>Stock Name</th>
+            <th>Date Bought</th>
+            <th>Price Paid</th>
+            <th>Quantity</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+
