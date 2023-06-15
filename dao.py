@@ -33,8 +33,10 @@ def getStockInfoData():
 
 def searchForSymbol(symbolToFind):
     symbolToFind = checkStockSymbol(symbolToFind)
-    query = "SELECT * FROM stockInfo WHERE symbol = '" + symbolToFind + "'"
-    results = runSelect(query)
+    query = "SELECT * FROM stockInfo WHERE symbol = %s"
+    data = (symbolToFind,)
+    results = runSelectWithData(query, data)
+    #results = runSelect(query)
     if results is None or len(results) == 0:
         returnValue = False
     else:
@@ -42,11 +44,58 @@ def searchForSymbol(symbolToFind):
     return returnValue 
 
 def createNewStockInfo(stockSymbol, stockCompany, stockSector, stockIndustry):
-    #'Symbol', 'Company', 'Sector', 'Industry'
     stockSymbol = checkStockSymbol(stockSymbol)
     query = "INSERT INTO stockInfo (name, symbol, sector, industry) VALUES (%s, %s, %s, %s)"
     data = (stockCompany, stockSymbol, stockSector, stockIndustry)
     runInsert(query, data)
+
+def addToChampionsList(stockSymbol, yearsOnList):
+    query = "INSERT INTO championsList(stockInfoID, lastSeenOnList, currentlyOnList, yearsOn) VALUES (%s, %s, %s, %s)"
+    tempResult = getStockInfoID(stockSymbol)
+    today = date.today()
+    data = (tempResult, today, True, yearsOnList)
+    runInsert(query, data)
+
+def updateChampionsList(stockSymbol, yearsOnList):
+    query = "UPDATE championsList SET lastSeenOnList = %s, currentlyOnList = %s, yearsOn = %s WHERE stockInfoID = %s"
+    tempResult = getStockInfoID(stockSymbol)
+    today = date.today()
+    data = (today, True, yearsOnList, tempResult)
+    runUpdateWithData(query, data)
+
+def putStockValuations(stockInfoID, sharePrice, pe):
+    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice, pe) VALUES (%s, %s, %s, %s)"
+    today = date.today()
+    data = (stockInfoID, today, sharePrice, pe)
+    runInsert(query, data)
+
+def getStockInfoID(stockSymbol):
+    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    cursor = cnx.cursor()
+    stockSymbol = checkStockSymbol(stockSymbol)
+    query = "SELECT id FROM stockInfo WHERE symbol = %s"
+    cursor.execute(query, (stockSymbol,))
+    #this is complete cause of this fetchone...
+    row = cursor.fetchone()
+    # close the cursor and MySQL connection
+    cursor.close()
+    cnx.close()
+    if row is None:
+        returnValue = False
+    else:
+        returnValue = row[0] 
+    return returnValue
+
+def truncateValuations():
+    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    cursor = cnx.cursor()
+    truncate_query = "TRUNCATE currentValuations"
+    cursor.execute(truncate_query)
+    # Commit the changes to the database
+    cnx.commit()
+    # close the cursor and MySQL connection
+    cursor.close()
+    cnx.close()
 
 def runSelect(tmpQuery):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
@@ -54,12 +103,24 @@ def runSelect(tmpQuery):
     #execute the query
     cursor.execute(tmpQuery)
     results = cursor.fetchall()
-    if len(results) == 0:
-        return
-    
     # close the cursor and MySQL connection
     cursor.close()
     cnx.close()
+    if results is None or len(results) == 0:
+        return
+    return results
+
+def runSelectWithData(tmpQuery, tmpData):
+    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    cursor = cnx.cursor()
+    #execute the query
+    cursor.execute(tmpQuery, tmpData)
+    results = cursor.fetchall()
+    # close the cursor and MySQL connection
+    cursor.close()
+    cnx.close()
+    if results is None or len(results) == 0:
+        return
     return results
 
 def runUpdate(tmpQuery):
@@ -71,103 +132,23 @@ def runUpdate(tmpQuery):
     # close the cursor and MySQL connection
     cursor.close()
     cnx.close()
-    return
 
+def runUpdateWithData(tmpQuery, tmpData):
+    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    cursor = cnx.cursor()
+    # execute the query
+    cursor.execute(tmpQuery, tmpData)
+    cnx.commit()
+    # close the cursor and MySQL connection
+    cursor.close()
+    cnx.close()
+    
 def runInsert(tmpQuery, tmpData):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
     #execute the query
-    cursor.execute(query, data)
+    cursor.execute(tmpQuery, tmpData)
     cnx.commit()
-
-    # close the cursor and MySQL connection
-    cursor.close()
-    cnx.close()
-
-def getStockInfoID(stockSymbol):
-    #stockInfoID, lastSeenOnList, currentlyOnList, yearsOn
-    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    cursor = cnx.cursor()
-    stockSymbol = checkStockSymbol(stockSymbol)
-    query = "SELECT id FROM stockInfo WHERE symbol = %s"
-
-    cursor.execute(query, (stockSymbol,))
-    row = cursor.fetchone()
-    if row is None:
-        returnValue = False
-    else:
-        returnValue = row[0] 
-
-    # close the cursor and MySQL connection
-    cursor.close()
-    cnx.close()
-    return returnValue
-
-def addToChampionsList(stockSymbol, yearsOnList):
-    #stockInfoID, lastSeenOnList, currentlyOnList, yearsOn
-    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    cursor = cnx.cursor()
-
-    tempResult = getStockInfoID(stockSymbol)
-
-    query = "INSERT INTO championsList(stockInfoID, lastSeenOnList, currentlyOnList, yearsOn) VALUES (%s, %s, %s, %s)"
-    today = date.today()
-    data = (tempResult, today, True, yearsOnList)
-
-    #execute the query
-    cursor.execute(query, data)
-    cnx.commit()
-
-    # close the cursor and MySQL connection
-    cursor.close()
-    cnx.close()
-
-def updateChampionsList(stockSymbol, yearsOnList):
-    #stockInfoID, lastSeenOnList, currentlyOnList, yearsOn
-    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    cursor = cnx.cursor()
-
-    tempResult = getStockInfoID(stockSymbol)
-
-    # set currentlyOnList in championsList to FALSE for all rows.
-    query = "UPDATE championsList SET lastSeenOnList = %s, currentlyOnList = %s, yearsOn = %s WHERE stockInfoID = %s"
-    today = date.today()
-    data = (today, True, yearsOnList, tempResult)
-
-    #execute the query
-    cursor.execute(query, data)
-    cnx.commit()
-
-    # close the cursor and MySQL connection
-    cursor.close()
-    cnx.close()
-
-def putStockValuations(stockInfoID, sharePrice, pe):
-    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    cursor = cnx.cursor()
-
-    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice, pe) VALUES (%s, %s, %s, %s)"
-    today = date.today()
-    data = (stockInfoID, today, sharePrice, pe)
-
-    #execute the query
-    cursor.execute(query, data)
-    cnx.commit()
-
-    # close the cursor and MySQL connection
-    cursor.close()
-    cnx.close()
-
-def truncateValuations():
-    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    cursor = cnx.cursor()
-
-    truncate_query = "TRUNCATE currentValuations"
-    cursor.execute(truncate_query)
-
-    # Commit the changes to the database
-    cnx.commit()
-
     # close the cursor and MySQL connection
     cursor.close()
     cnx.close()
