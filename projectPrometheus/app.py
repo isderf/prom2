@@ -1,24 +1,20 @@
 from flask import Flask, render_template, request
-from blueprints.valuations_bp import valuations_bp
+from dao import valuations_dao, addHolding_dao 
 import mysql.connector
 
 app = Flask(__name__)
 
-app.register_blueprint(valuations_bp)
-
 # @app.route('/', methods=['GET'])
 
 @app.route('/addHolding', methods=['GET'])
-def holdings_form():
-    # establish a connection to the database
-    cnx = mysql.connector.connect(user='access', password='yellowrandomkittenporter', host='localhost', database='dividendchampions')
+def addHolding():
+    addHolding = addHolding_dao.getAllStockInfo()
+    return render_template('addHolding_form.html', results=addHolding)
 
-    # create a cursor object to execute SQL queries
-    cursor = cnx.cursor()
-    
-    cursor.execute("SELECT id, name, symbol FROM stockInfo")
-    stock_info = cursor.fetchall()
-    return render_template('holdings_form.html', stock_info=stock_info)
+@app.route('/valuations', methods=['GET'])
+def valuations():
+    valuations = valuations_dao.getCurrentValutionsBySector()
+    return render_template('valuations.html', results=valuations)
 
 # Define a route to process the form submission and display the holdings
 @app.route('/viewHoldings', methods=['GET', 'POST'])
