@@ -1,4 +1,4 @@
-import dao
+import projectPrometheus.dao.dao as dao
 import time
 import yfinance as yf
 

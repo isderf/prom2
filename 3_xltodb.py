@@ -1,6 +1,6 @@
 import openpyxl
 import pandas as pd
-import dao
+import projectPrometheus.dao.dao as dao
 
 # define the columns we want
 sheet_name = 'Champions'
