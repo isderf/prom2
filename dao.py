@@ -21,28 +21,38 @@ def checkStockSymbol(stockSymbol):
     return newSymbol
 
 def setChampionsListToFalse():
-    cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    cursor = cnx.cursor()
-
     # set currentlyOnList in championsList to FALSE for all rows.
     query = "UPDATE championsList SET currentlyOnList = 0"
-
-    # execute the query
-    cursor.execute(query)
-    cnx.commit()
-
-    # close the cursor and MySQL connection
-    cursor.close()
-    cnx.close()
+    runUpdate(query)
     return
 
 def getStockInfoData():
+    query = "SELECT id, symbol FROM stockInfo"
+    results = runSelect(query)
+    return results
+
+def searchForSymbol(symbolToFind):
+    symbolToFind = checkStockSymbol(symbolToFind)
+    query = "SELECT * FROM stockInfo WHERE symbol = '" + symbolToFind + "'"
+    results = runSelect(query)
+    if results is None or len(results) == 0:
+        returnValue = False
+    else:
+        returnValue = True
+    return returnValue 
+
+def createNewStockInfo(stockSymbol, stockCompany, stockSector, stockIndustry):
+    #'Symbol', 'Company', 'Sector', 'Industry'
+    stockSymbol = checkStockSymbol(stockSymbol)
+    query = "INSERT INTO stockInfo (name, symbol, sector, industry) VALUES (%s, %s, %s, %s)"
+    data = (stockCompany, stockSymbol, stockSector, stockIndustry)
+    runInsert(query, data)
+
+def runSelect(tmpQuery):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
-    query = "SELECT id, symbol FROM stockInfo"
-
     #execute the query
-    cursor.execute(query)
+    cursor.execute(tmpQuery)
     results = cursor.fetchall()
     if len(results) == 0:
         return
@@ -52,33 +62,20 @@ def getStockInfoData():
     cnx.close()
     return results
 
-def searchForSymbol(symbolToFind):
+def runUpdate(tmpQuery):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
-    symbolToFind = checkStockSymbol(symbolToFind)
-    query = "SELECT * FROM stockInfo WHERE symbol = %s"
-
-    #execute the query
-    cursor.execute(query, (symbolToFind,))
-    results = cursor.fetchall()
-    if len(results) == 0:
-        returnValue = False
-    else:
-        returnValue = True
-    
+    # execute the query
+    cursor.execute(tmpQuery)
+    cnx.commit()
     # close the cursor and MySQL connection
     cursor.close()
     cnx.close()
-    return returnValue 
+    return
 
-def createNewStockInfo(stockSymbol, stockCompany, stockSector, stockIndustry):
-    #'Symbol', 'Company', 'Sector', 'Industry'
+def runInsert(tmpQuery, tmpData):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)
     cursor = cnx.cursor()
-    stockSymbol = checkStockSymbol(stockSymbol)
-    query = "INSERT INTO stockInfo (name, symbol, sector, industry) VALUES (%s, %s, %s, %s)"
-    data = (stockCompany, stockSymbol, stockSector, stockIndustry)
-
     #execute the query
     cursor.execute(query, data)
     cnx.commit()
@@ -86,7 +83,6 @@ def createNewStockInfo(stockSymbol, stockCompany, stockSector, stockIndustry):
     # close the cursor and MySQL connection
     cursor.close()
     cnx.close()
-    return 
 
 def getStockInfoID(stockSymbol):
     #stockInfoID, lastSeenOnList, currentlyOnList, yearsOn

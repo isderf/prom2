@@ -22,7 +22,7 @@ def holdings_form():
 @app.route('/viewHoldings', methods=['GET', 'POST'])
 def display_holdings():
     if request.method == 'POST':
-        stock_name = request.form.get('stock_name')
+        stock_id = request.form.get('stock_name')
         date_bought = request.form.get('date_bought')
         price_paid = float(request.form.get('price_paid'))
         quantity = int(request.form.get('quantity'))
@@ -34,8 +34,7 @@ def display_holdings():
         cursor = cnx.cursor()
     
         query = "INSERT INTO holdings (stockInfoID, dateBought, pricePaid, quantity) VALUES (%s, %s, %s, %s)"
-## TODO get stockInfoID
-        cursor.execute(query, (stock_name, date_bought, price_paid, quantity))
+        cursor.execute(query, (stock_id, date_bought, price_paid, quantity))
         cnx.commit()
     if request.method == 'GET':
         # establish a connection to the database
@@ -44,7 +43,8 @@ def display_holdings():
         cursor = cnx.cursor()
 
     # Retrieve the holdings data from the database
-    query = "SELECT * FROM holdings"
+    #query = "SELECT * FROM holdings"
+    query = "SELECT holdings.*, stockInfo.name FROM holdings INNER JOIN stockInfo ON holdings.stockInfoID = stockInfo.id"
     cursor.execute(query)
     data = cursor.fetchall()
 
