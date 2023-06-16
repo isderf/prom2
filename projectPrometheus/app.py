@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from dao import valuations_dao, addHolding_dao 
+from dao import valuations_dao, addHolding_dao, viewHoldings_dao
 import mysql.connector
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/addHolding', methods=['GET'])
 def addHolding():
     addHolding = addHolding_dao.getAllStockInfo()
-    return render_template('addHolding_form.html', results=addHolding)
+    return render_template('addHolding_form.html', stock_info=addHolding)
 
 @app.route('/valuations', methods=['GET'])
 def valuations():
@@ -18,7 +18,7 @@ def valuations():
 
 # Define a route to process the form submission and display the holdings
 @app.route('/viewHoldings', methods=['GET', 'POST'])
-def display_holdings():
+def viewHoldings():
     if request.method == 'POST':
         stock_id = request.form.get('stock_name')
         date_bought = request.form.get('date_bought')
