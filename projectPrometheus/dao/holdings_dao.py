@@ -17,5 +17,16 @@ def getAllHoldingsInfo():
 
     return grouped_results
 
-#def insertNewHolding():
+def insertNewHolding(tmpData):
+    query = "INSERT INTO holdings (stockInfoID, dateBought, pricePaid, quantity) VALUES (%s, %s, %s, %s)"
+    runInsert(query, tmpData)
 
+def showHoldings():
+    query = "SELECT holdings.*, stockInfo.name FROM holdings INNER JOIN stockInfo ON holdings.stockInfoID = stockInfo.id"
+    tmpData = runSelect(query)
+    return tmpData
+
+def getAllStockInfo():
+    query = ("SELECT id, name, symbol FROM stockInfo")
+    stock_info = runSelect(query)
+    return stock_info
