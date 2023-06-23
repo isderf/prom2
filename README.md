@@ -1,4 +1,4 @@
 TODO List
- - Move all DB access to DAO
+ - Sort Evaulate template before displaying
  - Calc PE for anything with NONE (12 months dividend return / current share price)
  - 
