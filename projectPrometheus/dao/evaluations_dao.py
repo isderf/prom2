@@ -36,9 +36,8 @@ def getStockDataBySector():
         # Calculate the total value for the current sector
         for stock in data['sectors'][sectorName]['stocks']:
             stockValue = stock['value']
-            print(stockValue)
             totalSectorValue += stockValue
-            totalValue += totalSectorValue
+            totalValue += stockValue
 
         # Update the sector's value 
         data['sectors'][sectorName]['value'] = totalSectorValue
