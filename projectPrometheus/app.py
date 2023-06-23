@@ -1,20 +1,23 @@
 from flask import Flask, render_template, request
-from dao import valuations_dao, holdings_dao
+from dao import valuations_dao, holdings_dao, evaluations_dao
 import mysql.connector
 
 app = Flask(__name__)
 
-# @app.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
+def evaluate():
+    evaluation = evaluations_dao.getStockDataBySector()
+    return render_template('evaluate.html', data=evaluation)
 
 @app.route('/addHolding', methods=['GET'])
 def addHolding():
     addHolding = holdings_dao.getAllStockInfo()
-    return render_template('addHolding_form.html', stock_info=addHolding)
+    return render_template('addHolding_form.html', data=addHolding)
 
 @app.route('/valuations', methods=['GET'])
 def valuations():
     valuations = valuations_dao.getCurrentValutionsBySector()
-    return render_template('valuations.html', results=valuations)
+    return render_template('valuations.html', data=valuations)
 
 # Define a route to process the form submission and display the holdings
 @app.route('/viewHoldings', methods=['GET', 'POST'])

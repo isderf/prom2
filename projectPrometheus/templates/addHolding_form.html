@@ -4,15 +4,15 @@
     <title>Add Holding</title>
 </head>
 <body>
+  <a href="/">Evaluate</a>
   <a href="/valuations">Current Valuations</a>
   <a href="/addHolding">Add Holding</a>
   <a href="/viewHoldings">View Holdings</a>
-  <a href="/">Evaluate</a>
     <h1>Enter Your Stock Holding</h1>
     <form action="/viewHoldings" method="post">
         <label for="stock_name">Stock Name:</label>
         <select id="stock_name" name="stock_name" required>
-            {% for stock in stock_info %}
+            {% for stock in data %}
 	    <option value="{{ stock[0] }}">{{ stock[2] }} {{ stock[1] }}</option>
             {% endfor %}
         </select><br><br>
