@@ -4,6 +4,7 @@ TODO List
  - Add stocks that aren't on Champions List
  - Sort Evaulate template before displaying
  - Save Holdings info somewhere...
+ - Update Current Valuations with quantity owned
  - Calc PE for anything with NONE (12 months dividend return / current share price)
 
 
