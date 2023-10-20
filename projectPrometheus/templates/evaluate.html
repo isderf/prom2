@@ -9,13 +9,13 @@
   <a href="/addHolding">Add Holding</a>
   <a href="/viewHoldings">View Holdings</a>
   <h1>Evaluate Next Purchase</h1>
-  	<h2> Total Value: $ {{ data.totalValue|float|round(2) }} </h2>
+      <h2> Total Value: $ {{ data.totalValue|float|round(2) }} </h2>
       {% for sector, sectorData in data.sectors.items() %}
       <h2>{{ sector }} Value: {{ sectorData['value']|float|round(2) }} Percent: {{ sectorData['percent']|float|round(2) }}%</h2>
         <table>
             <thead>
                 <tr>
-			<th>StockName</th>
+		    <th>StockName</th>
                     <th>Symbol</th>
                     <th>Share Price</th>
 		    <th>Quantity</th>
@@ -25,7 +25,7 @@
             <tbody>
 		{% for stock in sectorData.stocks %}
                     <tr>
-			    <td>{{ stock.name }}</td>
+			<td>{{ stock.name }}</td>
                         <td>{{ stock.symbol }}</td>
                         <td>{{ stock.shareprice }}</td>
 			<td>{{ stock.quantity }}</td>

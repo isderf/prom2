@@ -43,6 +43,7 @@ def getStockDataBySector():
         data['sectors'][sectorName]['value'] = totalSectorValue
         data['totalValue'] = totalValue
 
+    # calculate the % value for each sector
     for sector in sectors:
         sectorName = sector[0]
         sectorTmp = data['sectors'][sectorName]['value']
@@ -52,7 +53,16 @@ def getStockDataBySector():
         else:
             data['sectors'][sectorName]['percent'] = 0
 
-    return data
+    # Sort sectors by percent from lowest to highest
+    sorted_sectors = sorted(sectors, key=lambda sector: data['sectors'][sector[0]]['percent'])
+
+    # Reconstruct the data dictionary with sorted sectors
+    sorted_data = {
+        'totalValue': data['totalValue'],
+        'sectors': {sector[0]: data['sectors'][sector[0]] for sector in sorted_sectors}
+    }
+
+    return sorted_data
 
 def addStock(data, sector_name, symbol, stock_name, stock_quantity, stock_shareprice, stock_value):
     sector = data['sectors'].get(sector_name)
