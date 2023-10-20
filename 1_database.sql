@@ -11,6 +11,7 @@ GRANT ALL PRIVILEGES ON dividendchampions.* TO 'access'@'localhost';
 
 flush PRIVILEGES;
 
+-- INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('','','','');
 CREATE TABLE stockInfo(
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
