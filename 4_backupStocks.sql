@@ -11,6 +11,6 @@ INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('PSB HLDGS INC WI
 --SKT
 INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('TANGER FACTORY OUTLET CENTERS INC','SKT','Real Estate','');
 --T
-INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('AT&T INC COM','T','Infomation Technology','');
+INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('AT&T INC COM','T','Information Technology','');
 --WEYS
 INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('WEYCO GROUP INC COM','WEYS','Consumer Staples','');
