@@ -1,4 +1,4 @@
--- sudo mysql > 8_backupStocks.sql
+-- sudo mysql < 8_backupStocks.sql
 use dividendchampions;
 --HP
 INSERT INTO stockInfo (name, symbol, sector, industry) VALUES ('HELMERICH & PAYNE INC COM','HP','Industrials','');
