@@ -63,17 +63,17 @@ def updateChampionsList(stockSymbol, yearsOnList):
     data = (today, True, yearsOnList, tempResult)
     runUpdateWithData(query, data)
 
-def putStockValuations(stockInfoID, sharePrice):
-    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice) VALUES (%s, %s, %s)"
-    today = date.today()
-    data = (stockInfoID, today, sharePrice)
-    runInsert(query, data)
-
-#def putStockValuations(stockInfoID, sharePrice, pe):
-#    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice, pe) VALUES (%s, %s, %s, %s)"
+#def putStockValuations(stockInfoID, sharePrice):
+#    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice) VALUES (%s, %s, %s)"
 #    today = date.today()
-#    data = (stockInfoID, today, sharePrice, pe)
+#    data = (stockInfoID, today, sharePrice)
 #    runInsert(query, data)
+
+def putStockValuations(stockInfoID, sharePrice, pe):
+    query = "INSERT INTO currentValuations(stockInfoID, valuationDate, sharePrice, pe) VALUES (%s, %s, %s, %s)"
+    today = date.today()
+    data = (stockInfoID, today, sharePrice, pe)
+    runInsert(query, data)
 
 def getStockInfoID(stockSymbol):
     cnx = mysql.connector.connect(host=host, database=database, user=user, password=password)

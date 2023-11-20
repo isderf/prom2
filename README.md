@@ -1,7 +1,3 @@
-HACK
- - Put 6_pullValuations.py back
- - Put dao/dao.py back
-
 TODO List
  - Deal with Stocks that have gone off the list
  - Create new page for "old stocks"
