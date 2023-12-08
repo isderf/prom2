@@ -4,5 +4,5 @@ TODO List
  - Calc PE for anything with NONE (12 months dividend return / current share price)
 
 RUN
- - python3 6_pullValuations.py 
- - python3 projectprometheus/app.py
+ - python3 4_pullValuations.py 
+ - sh 5_runSite.sh
