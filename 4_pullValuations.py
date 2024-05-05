@@ -15,6 +15,7 @@ for row in loopVariable:
     # Create a ticker object for Google
     goog = yf.Ticker(stockSymbol)
 
+    print("Ticker: ", stockSymbol)
     # Get the current stock price
     current_price = goog.info['currentPrice']
     # get pe from google
@@ -32,7 +33,6 @@ for row in loopVariable:
     ## Get the current stock price
     #current_price= goog['Open'][0]
 
-    print("Ticker: ", stockSymbol)
     print("Current Stock Price: $", current_price)
     print("PE Ratio: ", pe_ratio)
 

@@ -16,6 +16,8 @@ def checkStockSymbol(stockSymbol):
         newSymbol = "MKC-V"
     elif stockSymbol == "RBCA.A":
         newSymbol = "RBCAA"
+    elif stockSymbol == "BF.A":
+        newSymbol = "BF-A"
     else:
         newSymbol = stockSymbol
     return newSymbol
