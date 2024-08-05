@@ -22,9 +22,9 @@ def insertNewHolding(tmpData):
     runInsert(query, tmpData)
 
 def showHoldings():
-    query = "SELECT holdings.*, stockInfo.name, stockInfo.symbol FROM holdings INNER JOIN stockInfo ON holdings.stockInfoID = stockInfo.id"
+    query = "SELECT holdings.*, stockInfo.name, stockInfo.symbol FROM holdings INNER JOIN stockInfo ON holdings.stockInfoID = stockInfo.id ORDER BY holdings.dateBought DESC"
     tmpData = runSelect(query)
-    return tmpData
+    return tmpData 
 
 def getAllStockInfo():
     query = ("SELECT id, name, symbol FROM stockInfo")
